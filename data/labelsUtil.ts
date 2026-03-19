@@ -9,7 +9,6 @@ export const flagLabels: FlagLabel[] = [
   { key: 'faq', text: 'FAQ', href: '/faq' },
   { key: 'work', text: 'Our Work', href: '#work' },
   { key: 'contact', text: 'Contact Us', href: '/contact' },
-  { key: 'solar-system', text: 'Solar System', href: '/solar-system' },
 ];
 
 export function getLabelByKey(key: string) {

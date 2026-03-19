@@ -36,10 +36,10 @@ export const partners: Partner[] = [
 		height: 54,
 	},
   {
-		id: "Rimberio",
-		name: "Rimberio",
-		logo: "/partners/rimberio.png",
-		width: 180,
-		height: 54,
+		id: "Salford",
+		name: "Salford",
+		logo: "/partners/salford.png",
+		width: 520,
+		height: 130,
 	},
 ];

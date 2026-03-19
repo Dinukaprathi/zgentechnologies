@@ -293,7 +293,8 @@ function SolarSystemCore({ height = '600px', isInteractive = true, onLoadingProg
 
     // Scene, Camera, Renderer with optimized settings
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 2000);
+    const viewportWidth = window.innerWidth;
+    const camera = new THREE.PerspectiveCamera(60, viewportWidth / container.clientHeight, 0.1, 2000);
     camera.position.set(0, 50, 80);
 
     setWebglError(null);
@@ -313,7 +314,7 @@ function SolarSystemCore({ height = '600px', isInteractive = true, onLoadingProg
       return;
     }
     
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(viewportWidth, container.clientHeight);
     renderer.setClearColor(0x000000, 0); // Transparent background
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 2.2;
@@ -1124,9 +1125,10 @@ function SolarSystemCore({ height = '600px', isInteractive = true, onLoadingProg
 
     const handleResize = () => {
       if (container) {
-        camera.aspect = container.clientWidth / container.clientHeight;
+        const resizedViewportWidth = window.innerWidth;
+        camera.aspect = resizedViewportWidth / container.clientHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setSize(resizedViewportWidth, container.clientHeight);
       }
     };
 
@@ -1274,11 +1276,13 @@ function SolarSystemCore({ height = '600px', isInteractive = true, onLoadingProg
         ref={mountRef}
         className="solar-system-container"
         style={{
-          width: '100%',
+          width: '100vw',
+          maxWidth: '100vw',
+          marginLeft: 'calc(50% - 50vw)',
+          marginRight: 'calc(50% - 50vw)',
           height: height,
           overflow: 'hidden',
           position: 'relative',
-          margin: 0,
           padding: 0,
           display: 'flex',
           alignItems: 'center',
@@ -1302,11 +1306,13 @@ function SolarSystemCore({ height = '600px', isInteractive = true, onLoadingProg
       ref={mountRef}
       className="solar-system-container"
       style={{
-        width: '100%',
+        width: '100vw',
+        maxWidth: '100vw',
+        marginLeft: 'calc(50% - 50vw)',
+        marginRight: 'calc(50% - 50vw)',
         height: height,
         overflow: 'hidden',
         position: 'relative',
-        margin: 0,
         padding: 0,
         cursor: isInteractive ? 'pointer' : 'default'
       }}
@@ -1493,11 +1499,13 @@ export default function SolarSystem({ height = '600px', isInteractive = true, on
       <div 
         className="solar-system-container"
         style={{
-          width: '100%',
+          width: '100vw',
+          maxWidth: '100vw',
+          marginLeft: 'calc(50% - 50vw)',
+          marginRight: 'calc(50% - 50vw)',
           height: height,
           overflow: 'hidden',
           position: 'relative',
-          margin: 0,
           padding: 0,
           display: 'flex',
           alignItems: 'center',

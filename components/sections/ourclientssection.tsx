@@ -5,8 +5,8 @@ export default function OurClientsSection() {
 	const loopedPartners = [...partners, ...partners];
 
 	return (
-		<section className="relative overflow-hidden bg-black py-10 md:py-12">
-			<div className="mx-auto mb-6 text-center">
+		<section className="relative overflow-hidden bg-black py-2 md:py-3">
+			<div className="mx-auto mb-3 text-center">
 				<p className="text-[9px] font-semibold uppercase tracking-[0.55em] text-zinc-500">
 					Trusted by global leaders
 				</p>
@@ -20,14 +20,14 @@ export default function OurClientsSection() {
 					{loopedPartners.map((partner, index) => (
 						<div
 							key={`${partner.id}-${index}`}
-							className="flex h-16 shrink-0 items-center justify-center opacity-70 transition-opacity duration-300 hover:opacity-100 md:h-20"
+							className="flex shrink-0 items-center justify-center opacity-70 transition-opacity duration-300 hover:opacity-100"
 						>
 							<Image
 								src={partner.logo}
 								alt={partner.name}
 								width={partner.width}
 								height={partner.height}
-								className="h-auto max-h-10 w-auto object-contain md:max-h-12"
+								className="h-auto w-auto object-contain"
 							/>
 						</div>
 					))}
