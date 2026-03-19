@@ -1,7 +1,12 @@
+'use client';
+
+import { useState } from 'react';
+import emailjs from '@emailjs/browser';
+
 const contactCards = [
 	{
 		title: "Headquarters",
-		value: "Innovation Way, Silicon Valley, CA",
+		value: "58/1/C Wikramaarachchi road,Yakkala, Sri Lanka",
 	},
 	{
 		title: "Email Channel",
@@ -9,7 +14,7 @@ const contactCards = [
 	},
 	{
 		title: "Phone Line",
-		value: "+1 (888) 200-0181",
+		value: "+94 77 247 1142",
 	},
 ];
 
@@ -17,7 +22,7 @@ const inquiryTopics = [
 	"Product Engineering",
 	"AI Automation",
 	"Cloud & DevOps",
-	"Creative Technology",
+	"Web site/system Development",
 	"Partnership",
 ];
 
@@ -29,6 +34,71 @@ const budgetTypes = [
 ];
 
 export default function ContactUs() {
+	const [formData, setFormData] = useState({
+		name: '',
+		email: '',
+		topic: '',
+		budget: '',
+		message: ''
+	});
+	const [isLoading, setIsLoading] = useState(false);
+	const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+	const [statusMessage, setStatusMessage] = useState('');
+
+	// Initialize EmailJS on component mount
+	if (typeof globalThis.window !== 'undefined') {
+		emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '');
+	}
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+		const { name, value } = e.target;
+		setFormData(prev => ({
+			...prev,
+			[name]: value
+		}));
+	};
+
+	const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		
+		// Validate form
+		if (!formData.name || !formData.email || !formData.topic || !formData.budget || !formData.message) {
+			setStatus('error');
+			setStatusMessage('Please fill in all fields');
+			return;
+		}
+
+		setIsLoading(true);
+		setStatus('idle');
+
+		try {
+			const templateParams = {
+				to_email: process.env.NEXT_PUBLIC_EMAILJS_TO_EMAIL || 'hello@zgenlabs.tech',
+				from_name: formData.name,
+				from_email: formData.email,
+				topic: formData.topic,
+				budget: formData.budget,
+				message: formData.message,
+				reply_to: formData.email
+			};
+
+			await emailjs.send(
+				process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
+				process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
+				templateParams
+			);
+
+			setStatus('success');
+			setStatusMessage('Thank you! We\'ll get back to you within 24 hours.');
+			setFormData({ name: '', email: '', topic: '', budget: '', message: '' });
+		} catch (error) {
+			console.error('EmailJS error:', error);
+			setStatus('error');
+			setStatusMessage('Failed to send message. Please try again later.');
+		} finally {
+			setIsLoading(false);
+		}
+	};
 	return (
 		<main className="relative min-h-screen overflow-hidden bg-[#060606] pt-28">
 			<div
@@ -79,7 +149,7 @@ export default function ContactUs() {
 				</div>
 
 				<div className="mt-10 grid gap-8 rounded-3xl border border-white/10 bg-[#0a0a0a]/90 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.45)] lg:grid-cols-[1.2fr_0.8fr] lg:p-8">
-					<form className="space-y-5" action="#" method="post">
+					<form className="space-y-5" onSubmit={handleSubmit}>
 						<div className="grid gap-5 sm:grid-cols-2">
 							<label className="block">
 								<span className="text-[10px] font-bold uppercase tracking-[0.24em] text-zinc-500">
@@ -88,8 +158,11 @@ export default function ContactUs() {
 								<input
 									type="text"
 									name="name"
+									value={formData.name}
+									onChange={handleChange}
 									placeholder="Jane Doe"
 									className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70"
+									required
 								/>
 							</label>
 
@@ -100,8 +173,11 @@ export default function ContactUs() {
 								<input
 									type="email"
 									name="email"
+									value={formData.email}
+									onChange={handleChange}
 									placeholder="you@company.com"
 									className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70"
+									required
 								/>
 							</label>
 						</div>
@@ -113,8 +189,10 @@ export default function ContactUs() {
 								</span>
 								<select
 									name="topic"
+									value={formData.topic}
+									onChange={handleChange}
 									className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70"
-									defaultValue=""
+									required
 								>
 									<option value="" disabled>
 										Select inquiry type
@@ -133,8 +211,10 @@ export default function ContactUs() {
 								</span>
 								<select
 									name="budget"
+									value={formData.budget}
+									onChange={handleChange}
 									className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70"
-									defaultValue=""
+									required
 								>
 									<option value="" disabled>
 										Select budget range
@@ -154,17 +234,31 @@ export default function ContactUs() {
 							</span>
 							<textarea
 								name="message"
+								value={formData.message}
+								onChange={handleChange}
 								rows={6}
 								placeholder="Tell us about your goals, scope, and timeline."
 								className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70"
+								required
 							/>
 						</label>
 
+						{status !== 'idle' && (
+							<div className={`rounded-lg px-4 py-3 text-sm ${
+								status === 'success' 
+									? 'bg-green-900/30 border border-green-500/50 text-green-300'
+									: 'bg-red-900/30 border border-red-500/50 text-red-300'
+							}`}>
+								{statusMessage}
+							</div>
+						)}
+
 						<button
 							type="submit"
-							className="inline-flex min-w-[190px] items-center justify-center border border-[#ff1010] bg-[#ff1010] px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition hover:bg-red-500"
+							disabled={isLoading}
+							className="inline-flex min-w-[190px] items-center justify-center border border-[#ff1010] bg-[#ff1010] px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
 						>
-							Send Request
+							{isLoading ? 'Sending...' : 'Send Request'}
 						</button>
 					</form>
 
