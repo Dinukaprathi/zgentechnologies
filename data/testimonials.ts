@@ -33,10 +33,10 @@ export const testimonialsData: Testimonial[] = [
 		id: '3',
 		quote:
 			'It has been a pleasure doing business with ZGenLabs. Their delivery was smooth, and the team performed exceptionally well, exceeding our expectations at every stage.',
-		author: 'Lakindu ',
+		author: 'Lakindu Rathmanagolla',
 		position: 'CEO',
 		company: 'Vebula',
 		initials: 'JD',
-		image: '/testimonials/lahiru-ceylanray.jpeg',
+		image: '/testimonials/laki-vebula.jpg',
 	}
 ];
