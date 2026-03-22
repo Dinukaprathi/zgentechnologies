@@ -77,7 +77,7 @@ export default function Footer() {
             <div className="mt-5 space-y-3 text-sm text-[#7d8597]">
               <p>hello@zgenlabs.tech</p>
               <p>+1 (888) 200-0181</p>
-              <p>Innovation Way, Silicon Valley, CA</p>
+              <p>58/1/C Wikramaarachchi road, Yakkala, Sri Lanka</p>
             </div>
           </div>
         </div>

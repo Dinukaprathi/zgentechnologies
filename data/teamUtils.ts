@@ -10,7 +10,7 @@ export const teamMembers: TeamMember[] = [
 		id: "001",
 		name: "Pasindu Palinda ",
 		position: "FOUNDER",
-		image: "/team/founder-palinda.jpeg",
+		image: "/team/founder-palinda.jpg",
 	},
 	{
 		id: "002",

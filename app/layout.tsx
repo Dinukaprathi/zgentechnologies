@@ -2,6 +2,12 @@ import '../styles/globals.css';
 export const metadata = {
   title: "ZGenLabs | Engineering the Future",
   description: "ZGenLabs official website",
+  icons: {
+    icon: [
+      { url: "/logo/logo-without-bg.png", type: "image/png" },
+    ],
+    apple: "/logo/logo-without-bg.png",
+  },
 };
 
 export default function RootLayout({

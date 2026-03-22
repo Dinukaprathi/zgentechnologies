@@ -1,54 +1,36 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import emailjs from '@emailjs/browser';
-
-const contactCards = [
-	{
-		title: "Headquarters",
-		value: "58/1/C Wikramaarachchi road,Yakkala, Sri Lanka",
-	},
-	{
-		title: "Email Channel",
-		value: "hello@zgenlabs.tech",
-	},
-	{
-		title: "Phone Line",
-		value: "+94 77 247 1142",
-	},
-];
-
-const inquiryTopics = [
-	"Product Engineering",
-	"AI Automation",
-	"Cloud & DevOps",
-	"Web site/system Development",
-	"Partnership",
-];
-
-const budgetTypes = [
-	"Below $1K",
-	"$1K - $5K",
-	"$5K - $15K",
-	"$15K - $50K"
-];
+import {
+	hasContactFormErrors,
+	validateContactForm,
+	type ContactFormData,
+	type ContactFormErrors,
+} from '../../lib/utils/contactusValidation';
+import {
+	budgetTypes,
+	contactCards,
+	emailJsConfig,
+	inquiryTopics,
+} from '../../config/contactusConfig';
 
 export default function ContactUs() {
-	const [formData, setFormData] = useState({
+	const [formData, setFormData] = useState<ContactFormData>({
 		name: '',
 		email: '',
 		topic: '',
 		budget: '',
 		message: ''
 	});
+	const [errors, setErrors] = useState<ContactFormErrors>({});
 	const [isLoading, setIsLoading] = useState(false);
 	const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
 	const [statusMessage, setStatusMessage] = useState('');
 
-	// Initialize EmailJS on component mount
-	if (typeof globalThis.window !== 'undefined') {
-		emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '');
-	}
+	useEffect(() => {
+		emailjs.init(emailJsConfig.publicKey);
+	}, []);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
 		const { name, value } = e.target;
@@ -56,41 +38,58 @@ export default function ContactUs() {
 			...prev,
 			[name]: value
 		}));
+
+		if (errors[name as keyof ContactFormData]) {
+			setErrors(prev => {
+				const nextErrors = { ...prev };
+				delete nextErrors[name as keyof ContactFormData];
+				return nextErrors;
+			});
+		}
 	};
 
 	const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		
-		// Validate form
-		if (!formData.name || !formData.email || !formData.topic || !formData.budget || !formData.message) {
+
+		const validationErrors = validateContactForm(formData, {
+			inquiryTopics,
+			budgetTypes,
+		});
+
+		if (hasContactFormErrors(validationErrors)) {
+			setErrors(validationErrors);
 			setStatus('error');
-			setStatusMessage('Please fill in all fields');
+			setStatusMessage('Please fix the highlighted fields and try again');
 			return;
 		}
+
+		setErrors({});
 
 		setIsLoading(true);
 		setStatus('idle');
 
 		try {
 			const templateParams = {
-				to_email: process.env.NEXT_PUBLIC_EMAILJS_TO_EMAIL || 'hello@zgenlabs.tech',
+				to_email: emailJsConfig.toEmail,
 				from_name: formData.name,
 				from_email: formData.email,
 				topic: formData.topic,
+				subject: formData.topic,
 				budget: formData.budget,
 				message: formData.message,
 				reply_to: formData.email
 			};
 
 			await emailjs.send(
-				process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
-				process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
+				emailJsConfig.serviceId,
+				emailJsConfig.templateId,
 				templateParams
 			);
 
 			setStatus('success');
 			setStatusMessage('Thank you! We\'ll get back to you within 24 hours.');
 			setFormData({ name: '', email: '', topic: '', budget: '', message: '' });
+			setErrors({});
 		} catch (error) {
 			console.error('EmailJS error:', error);
 			setStatus('error');
@@ -149,7 +148,7 @@ export default function ContactUs() {
 				</div>
 
 				<div className="mt-10 grid gap-8 rounded-3xl border border-white/10 bg-[#0a0a0a]/90 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.45)] lg:grid-cols-[1.2fr_0.8fr] lg:p-8">
-					<form className="space-y-5" onSubmit={handleSubmit}>
+					<form className="space-y-5" onSubmit={handleSubmit} noValidate>
 						<div className="grid gap-5 sm:grid-cols-2">
 							<label className="block">
 								<span className="text-[10px] font-bold uppercase tracking-[0.24em] text-zinc-500">
@@ -161,9 +160,15 @@ export default function ContactUs() {
 									value={formData.name}
 									onChange={handleChange}
 									placeholder="Jane Doe"
-									className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70"
+									aria-invalid={Boolean(errors.name)}
+									className={`mt-2 w-full rounded-xl border bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
+										errors.name ? 'border-red-500/80' : 'border-white/10'
+									}`}
 									required
 								/>
+								{errors.name && (
+									<p className="mt-2 text-xs text-red-400">{errors.name}</p>
+								)}
 							</label>
 
 							<label className="block">
@@ -171,14 +176,20 @@ export default function ContactUs() {
 									Work Email
 								</span>
 								<input
-									type="email"
+									type="text"
 									name="email"
 									value={formData.email}
 									onChange={handleChange}
 									placeholder="you@company.com"
-									className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70"
+									aria-invalid={Boolean(errors.email)}
+									className={`mt-2 w-full rounded-xl border bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
+										errors.email ? 'border-red-500/80' : 'border-white/10'
+									}`}
 									required
 								/>
+								{errors.email && (
+									<p className="mt-2 text-xs text-red-400">{errors.email}</p>
+								)}
 							</label>
 						</div>
 
@@ -191,18 +202,24 @@ export default function ContactUs() {
 									name="topic"
 									value={formData.topic}
 									onChange={handleChange}
-									className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70"
+									aria-invalid={Boolean(errors.topic)}
+									className={`mt-2 w-full rounded-xl border bg-zinc-900 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
+										errors.topic ? 'border-red-500/80' : 'border-zinc-500/70'
+									}`}
 									required
 								>
-									<option value="" disabled>
+									<option value="" disabled className="bg-white text-zinc-500">
 										Select inquiry type
 									</option>
 									{inquiryTopics.map((topic) => (
-										<option key={topic} value={topic}>
+										<option key={topic} value={topic} className="bg-white text-zinc-900">
 											{topic}
 										</option>
 									))}
 								</select>
+								{errors.topic && (
+									<p className="mt-2 text-xs text-red-400">{errors.topic}</p>
+								)}
 							</label>
 
 							<label className="block">
@@ -213,18 +230,24 @@ export default function ContactUs() {
 									name="budget"
 									value={formData.budget}
 									onChange={handleChange}
-									className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70"
+									aria-invalid={Boolean(errors.budget)}
+									className={`mt-2 w-full rounded-xl border bg-zinc-900 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
+										errors.budget ? 'border-red-500/80' : 'border-zinc-500/70'
+									}`}
 									required
 								>
-									<option value="" disabled>
+									<option value="" disabled className="bg-white text-zinc-500">
 										Select budget range
 									</option>
 									{budgetTypes.map((budget) => (
-										<option key={budget} value={budget}>
+										<option key={budget} value={budget} className="bg-white text-zinc-900">
 											{budget}
 										</option>
 									))}
 								</select>
+								{errors.budget && (
+									<p className="mt-2 text-xs text-red-400">{errors.budget}</p>
+								)}
 							</label>
 						</div>
 
@@ -238,9 +261,15 @@ export default function ContactUs() {
 								onChange={handleChange}
 								rows={6}
 								placeholder="Tell us about your goals, scope, and timeline."
-								className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70"
+								aria-invalid={Boolean(errors.message)}
+								className={`mt-2 w-full rounded-xl border bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
+									errors.message ? 'border-red-500/80' : 'border-white/10'
+								}`}
 								required
 							/>
+							{errors.message && (
+								<p className="mt-2 text-xs text-red-400">{errors.message}</p>
+							)}
 						</label>
 
 						{status !== 'idle' && (
