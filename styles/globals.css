@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html, body {
+    @apply overflow-x-hidden w-full relative touch-pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  * {
+    @apply box-border;
+  }
+}
+
 /* Your animations */
 @keyframes scroll {
   0% { transform: translateX(0); }
