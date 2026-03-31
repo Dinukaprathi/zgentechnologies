@@ -53,15 +53,15 @@ export default function CountdownSection({
 	}, [isInView, stats]);
 
 	return (
-		<section ref={sectionRef} className="bg-[#070707] py-16 md:py-20">
-			<div className="mx-auto grid max-w-7xl grid-cols-2 gap-y-10 px-6 md:grid-cols-4 md:px-10">
+		<section ref={sectionRef} className="bg-[#070707] py-12 xs:py-14 sm:py-16 md:py-20">
+			<div className="mx-auto grid max-w-7xl grid-cols-2 gap-y-6 xs:gap-y-8 sm:gap-y-10 px-4 xs:px-6 md:grid-cols-4 md:px-10">
 				{stats.map((item, index) => (
 					<div key={item.label} className="text-center">
-						<p className="font-display text-6xl font-black leading-none text-zinc-200 md:text-7xl">
+						<p className="font-display text-4xl xs:text-5xl sm:text-6xl font-black leading-none text-zinc-200 md:text-7xl">
 							{counts[index]}
 							{item.suffix}
 						</p>
-						<p className="mt-3 text-[9px] font-bold uppercase tracking-[0.45em] text-[#ff1111] md:text-[10px]">
+						<p className="mt-2 xs:mt-3 text-[7px] xs:text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.35em] xs:tracking-[0.45em] text-[#ff1111] md:text-[10px]">
 							{item.label}
 						</p>
 					</div>

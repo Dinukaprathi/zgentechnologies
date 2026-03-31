@@ -77,8 +77,8 @@ export default function Work() {
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
             {slides.map((slide, slideIndex) => (
-              <div key={slideKeys[slideIndex]} className="w-full shrink-0">
-                <div className="grid gap-6 md:grid-cols-3 lg:gap-8">
+              <div key={slideKeys[slideIndex]} className="w-full shrink-0 px-2">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:gap-8">
                   {slide.map((work) => (
                     <Link
                       key={work.id}
@@ -100,39 +100,38 @@ export default function Work() {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/30" />
                         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0a0c10] to-transparent" />
 
-                        <div className="absolute left-4 top-4 flex flex-wrap items-center gap-2">
+                        <div className="absolute left-3 top-3 xs:left-4 xs:top-4 flex flex-wrap items-center gap-1.5 xs:gap-2">
                           {categoryLabels[work.category] && (
-                            <span className="inline-flex items-center rounded-full border border-[#ff1111]/40 bg-black/40 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#ff4d4d] backdrop-blur">
+                            <span className="inline-flex items-center rounded-full border border-[#ff1111]/40 bg-black/40 px-2 py-0.5 xs:px-3 xs:py-1 text-[8px] xs:text-[10px] font-semibold uppercase tracking-[0.15em] xs:tracking-[0.2em] text-[#ff4d4d] backdrop-blur">
                               {categoryLabels[work.category]}
                             </span>
                           )}
-                          <span className="inline-flex items-center rounded-full border border-white/20 bg-black/35 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-zinc-200 backdrop-blur">
+                          <span className="inline-flex items-center rounded-full border border-white/20 bg-black/35 px-2 py-0.5 xs:px-2.5 xs:py-1 text-[8px] xs:text-[10px] font-medium uppercase tracking-wider text-zinc-200 backdrop-blur">
                             {work.year}
                           </span>
                         </div>
                       </div>
 
-                      <div className="relative space-y-4 p-5 md:p-6">
+                      <div className="relative space-y-3 p-4 xs:p-5 md:p-6">
                         {work.client && (
-                          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-zinc-400">
+                          <p className="text-[10px] xs:text-[11px] font-medium uppercase tracking-[0.2em] text-zinc-400">
                             Client: <span className="text-zinc-200">{work.client}</span>
                           </p>
                         )}
 
-                        <h3 className="font-display text-xl font-black uppercase text-zinc-100 md:text-2xl">
+                        <h3 className="font-display text-lg xs:text-xl font-black uppercase text-zinc-100 md:text-2xl">
                           {work.title}
                         </h3>
 
                         {work.subtitle && (
-                          <p className="line-clamp-2 text-sm leading-relaxed text-zinc-400">
+                          <p className="line-clamp-2 text-xs xs:text-sm leading-relaxed text-zinc-400">
                             {work.subtitle}
                           </p>
                         )}
 
-                        <div className="flex items-center justify-end border-t border-white/10 pt-4">
-
-                          <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/5 transition-all duration-300 group-hover:border-[#ff1111]/50 group-hover:bg-[#ff1111]/10">
-                            <ArrowRight className="h-4 w-4 text-zinc-300 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-[#ff8f8f]" />
+                        <div className="flex items-center justify-end border-t border-white/10 pt-3 xs:pt-4">
+                          <div className="flex h-9 w-9 xs:h-11 xs:w-11 items-center justify-center rounded-full border border-white/15 bg-white/5 transition-all duration-300 group-hover:border-[#ff1111]/50 group-hover:bg-[#ff1111]/10">
+                            <ArrowRight className="h-3.5 w-3.5 xs:h-4 xs:w-4 text-zinc-300 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-[#ff8f8f]" />
                           </div>
                         </div>
                       </div>

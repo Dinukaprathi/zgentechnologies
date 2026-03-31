@@ -33,7 +33,7 @@ const faqItems = [
 
 export default function FaqPage() {
 	return (
-		<main className="relative min-h-screen overflow-hidden bg-[#060606] pt-28">
+		<main className="relative min-h-screen overflow-hidden bg-[#060606] pt-20 xs:pt-24 sm:pt-28">
 			<div
 				className="pointer-events-none absolute inset-0 opacity-40"
 				style={{
@@ -50,57 +50,57 @@ export default function FaqPage() {
 				}}
 			/>
 
-			<section className="relative mx-auto w-full max-w-7xl px-6 pb-20 lg:px-10">
+			<section className="relative mx-auto w-full max-w-7xl px-4 xs:px-6 pb-16 xs:pb-20 lg:px-10">
 				<div className="max-w-4xl">
-					<p className="inline-flex rounded-full border border-red-600/35 bg-red-900/10 px-4 py-1 text-[10px] font-semibold uppercase tracking-[0.35em] text-red-400">
+					<p className="inline-flex rounded-full border border-red-600/35 bg-red-900/10 px-3 py-1 text-[8px] xs:text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.25em] xs:tracking-[0.35em] text-red-400">
 						Support Answers
 					</p>
-					<h1 className="mt-6 font-display text-5xl font-black uppercase leading-[0.95] text-white sm:text-6xl md:text-7xl">
+					<h1 className="mt-4 xs:mt-5 sm:mt-6 font-display text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase leading-[0.95] text-white">
 						Frequently Asked <span className="block text-[#ff1010]">Questions</span>
 					</h1>
-					<p className="mt-6 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
+					<p className="mt-4 xs:mt-5 sm:mt-6 max-w-2xl text-sm xs:text-base leading-relaxed xs:leading-relaxed text-zinc-400 sm:text-lg">
 						Quick answers about process, timelines, pricing, and collaboration.
 						 If your question is not listed, reach out and we will help directly.
 					</p>
 				</div>
 
-				<div className="mt-10 grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-					<div className="space-y-4">
+				<div className="mt-6 xs:mt-8 sm:mt-10 grid gap-5 xs:gap-6 sm:gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+					<div className="space-y-3 xs:space-y-4">
 						{faqItems.map((item, index) => (
 							<details
 								key={item.question}
-								className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm"
+								className="group rounded-xl xs:rounded-2xl border border-white/10 bg-white/[0.03] p-4 xs:p-5 backdrop-blur-sm"
 								open={index === 0}
 							>
-								<summary className="cursor-pointer list-none pr-8 text-sm font-semibold uppercase tracking-[0.12em] text-zinc-100 marker:hidden">
+								<summary className="cursor-pointer list-none pr-8 text-xs xs:text-sm font-semibold uppercase tracking-[0.1em] xs:tracking-[0.12em] text-zinc-100 marker:hidden">
 									{item.question}
 									<span className="float-right text-red-400 transition group-open:rotate-45">
 										+
 									</span>
 								</summary>
-								<p className="mt-4 text-sm leading-relaxed text-zinc-300">
+								<p className="mt-3 xs:mt-4 text-xs xs:text-sm leading-relaxed text-zinc-300">
 									{item.answer}
 								</p>
 							</details>
 						))}
 					</div>
 
-					<aside className="rounded-2xl border border-white/10 bg-gradient-to-b from-[#180808] to-[#0d0d0d] p-6">
-						<p className="text-[10px] font-bold uppercase tracking-[0.24em] text-red-300">
+					<aside className="rounded-xl xs:rounded-2xl border border-white/10 bg-gradient-to-b from-[#180808] to-[#0d0d0d] p-4 xs:p-5 sm:p-6">
+						<p className="text-[9px] xs:text-[10px] font-bold uppercase tracking-[0.2em] xs:tracking-[0.24em] text-red-300">
 							Need Faster Clarification?
 						</p>
-						<p className="mt-4 text-sm leading-relaxed text-zinc-300">
+						<p className="mt-3 xs:mt-4 text-sm leading-relaxed text-zinc-300">
 							For project-specific guidance, send your goals and constraints through
 							 our contact form and our team will respond within one business day.
 						</p>
 						<a
 							href="/contact"
-							className="mt-6 inline-flex min-w-[180px] items-center justify-center border border-[#ff1010] bg-[#ff1010] px-7 py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition hover:bg-red-500"
+							className="mt-4 xs:mt-5 sm:mt-6 inline-flex w-full xs:w-auto items-center justify-center min-w-[170px] xs:min-w-[180px] border border-[#ff1010] bg-[#ff1010] px-6 xs:px-7 py-2.5 xs:py-3 text-[10px] xs:text-[11px] font-bold uppercase tracking-[0.18em] xs:tracking-[0.2em] text-white transition hover:bg-red-500"
 						>
 							Contact Team
 						</a>
 
-						<div className="mt-8 border-t border-white/10 pt-5 text-xs uppercase tracking-[0.2em] text-zinc-500">
+						<div className="mt-5 xs:mt-6 sm:mt-8 border-t border-white/10 pt-3 xs:pt-4 sm:pt-5 text-[10px] xs:text-xs uppercase tracking-[0.18em] xs:tracking-[0.2em] text-zinc-500">
 							Response Window: Within 24 hours
 						</div>
 					</aside>

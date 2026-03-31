@@ -99,7 +99,7 @@ export default function ContactUs() {
 		}
 	};
 	return (
-		<main className="relative min-h-screen overflow-hidden bg-[#060606] pt-28">
+		<main className="relative min-h-screen overflow-hidden bg-[#060606] pt-20 xs:pt-24 sm:pt-28">
 			<div
 				className="pointer-events-none absolute inset-0 opacity-40"
 				style={{
@@ -116,42 +116,42 @@ export default function ContactUs() {
 				}}
 			/>
 
-			<section className="relative mx-auto w-full max-w-7xl px-6 pb-20 lg:px-10">
+			<section className="relative mx-auto w-full max-w-7xl px-4 xs:px-6 pb-16 xs:pb-20 lg:px-10">
 				<div className="max-w-4xl">
-					<p className="inline-flex rounded-full border border-red-600/35 bg-red-900/10 px-4 py-1 text-[10px] font-semibold uppercase tracking-[0.35em] text-red-400">
+					<p className="inline-flex rounded-full border border-red-600/35 bg-red-900/10 px-3 py-1 text-[8px] xs:text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.25em] xs:tracking-[0.35em] text-red-400">
 						Contact ZGenLabs
 					</p>
-					<h1 className="mt-6 font-display text-5xl font-black uppercase leading-[0.95] text-white sm:text-6xl md:text-7xl">
-						Let&apos;s Build{" "}
+					<h1 className="mt-4 xs:mt-5 sm:mt-6 font-display text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase leading-[0.95] text-white">
+						{"Let's"} Build{" "}
 						<span className="block text-[#ff1010]">The Future Together</span>
 					</h1>
-					<p className="mt-6 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
+					<p className="mt-4 xs:mt-5 sm:mt-6 max-w-2xl text-sm xs:text-base leading-relaxed xs:leading-relaxed text-zinc-400 sm:text-lg">
 						Share your challenge, idea, or roadmap and our team will connect
 						with a practical strategy for design, engineering, and deployment.
 					</p>
 				</div>
 
-				<div className="mt-12 grid gap-5 md:grid-cols-3">
+				<div className="mt-6 xs:mt-8 sm:mt-10 md:mt-12 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-3 xs:gap-4 sm:gap-5">
 					{contactCards.map((card) => (
 						<div
 							key={card.title}
-							className="rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-5 backdrop-blur-sm"
+							className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 xs:px-5 py-4 xs:py-5 backdrop-blur-sm"
 						>
-							<p className="text-[10px] font-bold uppercase tracking-[0.24em] text-zinc-500">
+							<p className="text-[9px] xs:text-[10px] font-bold uppercase tracking-[0.2em] xs:tracking-[0.24em] text-zinc-500">
 								{card.title}
 							</p>
-							<p className="mt-3 text-sm leading-relaxed text-zinc-200">
+							<p className="mt-2 xs:mt-3 text-sm leading-relaxed text-zinc-200">
 								{card.value}
 							</p>
 						</div>
 					))}
 				</div>
 
-				<div className="mt-10 grid gap-8 rounded-3xl border border-white/10 bg-[#0a0a0a]/90 p-6 shadow-[0_30px_90px_rgba(0,0,0,0.45)] lg:grid-cols-[1.2fr_0.8fr] lg:p-8">
-					<form className="space-y-5" onSubmit={handleSubmit} noValidate>
-						<div className="grid gap-5 sm:grid-cols-2">
+				<div className="mt-6 xs:mt-8 sm:mt-10 grid gap-6 xs:gap-8 rounded-2xl xs:rounded-3xl border border-white/10 bg-[#0a0a0a]/90 p-4 xs:p-5 sm:p-6 lg:p-8 shadow-[0_30px_90px_rgba(0,0,0,0.45)] lg:grid-cols-[1.2fr_0.8fr]">
+					<form className="space-y-4 xs:space-y-5" onSubmit={handleSubmit} noValidate>
+						<div className="grid grid-cols-1 gap-4 xs:gap-5 sm:grid-cols-2">
 							<label className="block">
-								<span className="text-[10px] font-bold uppercase tracking-[0.24em] text-zinc-500">
+								<span className="text-[9px] xs:text-[10px] font-bold uppercase tracking-[0.2em] xs:tracking-[0.24em] text-zinc-500">
 									Full Name
 								</span>
 								<input
@@ -161,18 +161,18 @@ export default function ContactUs() {
 									onChange={handleChange}
 									placeholder="Jane Doe"
 									aria-invalid={Boolean(errors.name)}
-									className={`mt-2 w-full rounded-xl border bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
+									className={`mt-2 w-full rounded-xl border bg-black/30 px-3 xs:px-4 py-2.5 xs:py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
 										errors.name ? 'border-red-500/80' : 'border-white/10'
 									}`}
 									required
 								/>
 								{errors.name && (
-									<p className="mt-2 text-xs text-red-400">{errors.name}</p>
+									<p className="mt-1.5 xs:mt-2 text-xs text-red-400">{errors.name}</p>
 								)}
 							</label>
 
 							<label className="block">
-								<span className="text-[10px] font-bold uppercase tracking-[0.24em] text-zinc-500">
+								<span className="text-[9px] xs:text-[10px] font-bold uppercase tracking-[0.2em] xs:tracking-[0.24em] text-zinc-500">
 									Work Email
 								</span>
 								<input
@@ -182,20 +182,20 @@ export default function ContactUs() {
 									onChange={handleChange}
 									placeholder="you@company.com"
 									aria-invalid={Boolean(errors.email)}
-									className={`mt-2 w-full rounded-xl border bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
+									className={`mt-2 w-full rounded-xl border bg-black/30 px-3 xs:px-4 py-2.5 xs:py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
 										errors.email ? 'border-red-500/80' : 'border-white/10'
 									}`}
 									required
 								/>
 								{errors.email && (
-									<p className="mt-2 text-xs text-red-400">{errors.email}</p>
+									<p className="mt-1.5 xs:mt-2 text-xs text-red-400">{errors.email}</p>
 								)}
 							</label>
 						</div>
 
-						<div className="grid gap-5 sm:grid-cols-2">
+						<div className="grid grid-cols-1 gap-4 xs:gap-5 sm:grid-cols-2">
 							<label className="block">
-								<span className="text-[10px] font-bold uppercase tracking-[0.24em] text-zinc-500">
+								<span className="text-[9px] xs:text-[10px] font-bold uppercase tracking-[0.2em] xs:tracking-[0.24em] text-zinc-500">
 									Topic
 								</span>
 								<select
@@ -203,7 +203,7 @@ export default function ContactUs() {
 									value={formData.topic}
 									onChange={handleChange}
 									aria-invalid={Boolean(errors.topic)}
-									className={`mt-2 w-full rounded-xl border bg-zinc-900 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
+									className={`mt-2 w-full rounded-xl border bg-zinc-900 px-3 xs:px-4 py-2.5 xs:py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
 										errors.topic ? 'border-red-500/80' : 'border-zinc-500/70'
 									}`}
 									required
@@ -218,12 +218,12 @@ export default function ContactUs() {
 									))}
 								</select>
 								{errors.topic && (
-									<p className="mt-2 text-xs text-red-400">{errors.topic}</p>
+									<p className="mt-1.5 xs:mt-2 text-xs text-red-400">{errors.topic}</p>
 								)}
 							</label>
 
 							<label className="block">
-								<span className="text-[10px] font-bold uppercase tracking-[0.24em] text-zinc-500">
+								<span className="text-[9px] xs:text-[10px] font-bold uppercase tracking-[0.2em] xs:tracking-[0.24em] text-zinc-500">
 									Budget Type
 								</span>
 								<select
@@ -231,7 +231,7 @@ export default function ContactUs() {
 									value={formData.budget}
 									onChange={handleChange}
 									aria-invalid={Boolean(errors.budget)}
-									className={`mt-2 w-full rounded-xl border bg-zinc-900 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
+									className={`mt-2 w-full rounded-xl border bg-zinc-900 px-3 xs:px-4 py-2.5 xs:py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
 										errors.budget ? 'border-red-500/80' : 'border-zinc-500/70'
 									}`}
 									required
@@ -246,34 +246,34 @@ export default function ContactUs() {
 									))}
 								</select>
 								{errors.budget && (
-									<p className="mt-2 text-xs text-red-400">{errors.budget}</p>
+									<p className="mt-1.5 xs:mt-2 text-xs text-red-400">{errors.budget}</p>
 								)}
 							</label>
 						</div>
 
 						<label className="block">
-							<span className="text-[10px] font-bold uppercase tracking-[0.24em] text-zinc-500">
+							<span className="text-[9px] xs:text-[10px] font-bold uppercase tracking-[0.2em] xs:tracking-[0.24em] text-zinc-500">
 								Project Brief
 							</span>
 							<textarea
 								name="message"
 								value={formData.message}
 								onChange={handleChange}
-								rows={6}
+								rows={5}
 								placeholder="Tell us about your goals, scope, and timeline."
 								aria-invalid={Boolean(errors.message)}
-								className={`mt-2 w-full rounded-xl border bg-black/30 px-4 py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
+								className={`mt-2 w-full rounded-xl border bg-black/30 px-3 xs:px-4 py-2.5 xs:py-3 text-sm text-zinc-100 outline-none transition focus:border-red-500/70 ${
 									errors.message ? 'border-red-500/80' : 'border-white/10'
 								}`}
 								required
 							/>
 							{errors.message && (
-								<p className="mt-2 text-xs text-red-400">{errors.message}</p>
+								<p className="mt-1.5 xs:mt-2 text-xs text-red-400">{errors.message}</p>
 							)}
 						</label>
 
 						{status !== 'idle' && (
-							<div className={`rounded-lg px-4 py-3 text-sm ${
+							<div className={`rounded-lg px-3 xs:px-4 py-2.5 xs:py-3 text-xs xs:text-sm ${
 								status === 'success' 
 									? 'bg-green-900/30 border border-green-500/50 text-green-300'
 									: 'bg-red-900/30 border border-red-500/50 text-red-300'
@@ -285,24 +285,24 @@ export default function ContactUs() {
 						<button
 							type="submit"
 							disabled={isLoading}
-							className="inline-flex min-w-[190px] items-center justify-center border border-[#ff1010] bg-[#ff1010] px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+							className="inline-flex w-full xs:w-auto items-center justify-center min-w-[170px] xs:min-w-[190px] border border-[#ff1010] bg-[#ff1010] px-6 xs:px-8 py-2.5 xs:py-3 text-[10px] xs:text-[11px] font-bold uppercase tracking-[0.18em] xs:tracking-[0.2em] text-white transition hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
 						>
 							{isLoading ? 'Sending...' : 'Send Request'}
 						</button>
 					</form>
 
-					<aside className="rounded-2xl border border-white/10 bg-gradient-to-b from-[#180808] to-[#0d0d0d] p-6">
-						<p className="text-[10px] font-bold uppercase tracking-[0.24em] text-red-300">
+					<aside className="rounded-xl xs:rounded-2xl border border-white/10 bg-gradient-to-b from-[#180808] to-[#0d0d0d] p-4 xs:p-5 sm:p-6">
+						<p className="text-[9px] xs:text-[10px] font-bold uppercase tracking-[0.2em] xs:tracking-[0.24em] text-red-300">
 							Why Teams Choose Us
 						</p>
-						<ul className="mt-5 space-y-4 text-sm leading-relaxed text-zinc-300">
+						<ul className="mt-3 xs:mt-4 sm:mt-5 space-y-3 xs:space-y-4 text-sm leading-relaxed text-zinc-300">
 							<li>Senior cross-functional team across product, AI, and cloud.</li>
 							<li>Rapid proof-of-concept cycles with measurable milestones.</li>
 							<li>Transparent communication and delivery governance.</li>
 							<li>Security-first engineering for enterprise reliability.</li>
 						</ul>
 
-						<div className="mt-8 border-t border-white/10 pt-5 text-xs uppercase tracking-[0.2em] text-zinc-500">
+						<div className="mt-5 xs:mt-6 sm:mt-8 border-t border-white/10 pt-3 xs:pt-4 sm:pt-5 text-[10px] xs:text-xs uppercase tracking-[0.18em] xs:tracking-[0.2em] text-zinc-500">
 							Typical Response Time: Within 24 hours
 						</div>
 					</aside>
