@@ -8,9 +8,7 @@ import {
   FaFlask,
   FaRocket,
   FaSync,
-  FaChevronRight,
 } from "react-icons/fa";
-import { GiCycle } from "react-icons/gi";
 
 // Agile phases with their details
 const agilePhases = [
@@ -64,46 +62,39 @@ const agilePhases = [
   },
 ];
 
-// Number of flowing dots on the orbit path
-const FLOW_DOT_COUNT = 12;
-
-// Responsive orbit configurations
-const getOrbitConfig = (containerWidth: number) => {
+// Responsive stagger configurations for the flow layout
+const getStaggerConfig = (containerWidth: number) => {
   if (containerWidth < 640) {
-    // Mobile (xs)
+    // Mobile (xs) - single column
     return {
-      orbitRadius: 130,
-      containerHeight: 340,
-      centerX: 170,
-      centerY: 170,
-      hubSize: 56,
+      columns: 1,
+      cardMinWidth: '100%',
+      gap: 12,
+      hubSize: 48,
     };
   } else if (containerWidth < 768) {
-    // sm
+    // sm - two columns
     return {
-      orbitRadius: 180,
-      containerHeight: 440,
-      centerX: 220,
-      centerY: 220,
-      hubSize: 64,
+      columns: 2,
+      cardMinWidth: 'calc(50% - 8px)',
+      gap: 16,
+      hubSize: 56,
     };
   } else if (containerWidth < 1024) {
-    // md
+    // md - two columns wider
     return {
-      orbitRadius: 220,
-      containerHeight: 520,
-      centerX: 270,
-      centerY: 270,
-      hubSize: 72,
+      columns: 2,
+      cardMinWidth: 'calc(50% - 12px)',
+      gap: 24,
+      hubSize: 64,
     };
   } else {
-    // lg+
+    // lg+ - three columns
     return {
-      orbitRadius: 270,
-      containerHeight: 620,
-      centerX: 330,
-      centerY: 330,
-      hubSize: 80,
+      columns: 3,
+      cardMinWidth: 'calc(33.333% - 16px)',
+      gap: 24,
+      hubSize: 72,
     };
   }
 };
@@ -197,7 +188,7 @@ export default function HowCompanyWorks() {
     };
   }, [hasAnimated, isPlaying]);
 
-  const config = getOrbitConfig(containerWidth);
+  const config = getStaggerConfig(containerWidth);
   const revealClass = hasAnimated
     ? "translate-y-0 opacity-100 blur-0"
     : "translate-y-6 opacity-0 blur-[2px]";
@@ -266,315 +257,248 @@ export default function HowCompanyWorks() {
           </button>
         </div>
 
-        {/* Agile Cycle Visualization */}
+        {/* Agile Process Flow Visualization */}
         <div
           ref={containerRef}
-          className={`mt-8 sm:mt-10 md:mt-12 relative transform-gpu transition-all duration-700 ease-out ${revealClass}`}
-          style={{ 
-            transitionDelay: "300ms",
-            height: `${config.containerHeight}px`,
-          }}
+          className={`mt-8 sm:mt-10 md:mt-12 transform-gpu transition-all duration-700 ease-out ${revealClass}`}
+          style={{ transitionDelay: "300ms" }}
         >
-          {/* Central Hub */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-            <div className="relative">
-              {/* Progress ring around center */}
-              <svg 
-                className="absolute inset-0 -rotate-90" 
-                viewBox="0 0 100 100"
-                style={{ 
-                  width: `${config.hubSize}px`, 
-                  height: `${config.hubSize}px` 
-                }}
-              >
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="42"
-                  fill="none"
-                  stroke="#ffffff10"
-                  strokeWidth="3"
-                />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="42"
-                  fill="none"
-                  stroke="#ff1111"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeDasharray={`${animationProgress * 264} 264`}
-                  className="transition-none"
-                  style={{ filter: 'drop-shadow(0 0 4px #ff1111)' }}
-                />
-              </svg>
-
-              {/* Pulsing rings */}
-              {isPlaying && (
-                <div className="absolute inset-0 animate-ping opacity-20">
-                  <div 
-                    className="rounded-full border-2 border-[#ff1111]"
-                    style={{ width: `${config.hubSize}px`, height: `${config.hubSize}px` }}
-                  />
-                </div>
-              )}
-
-              {/* Center circle */}
+          {/* Animated Progress Flow Line (replacing orbit) */}
+          <div className="relative mb-6 sm:mb-8">
+            <div className="flex items-center justify-between relative">
+              {/* Background flow line */}
+              <div className="absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-[#ff1111]/10 via-[#ff1111]/30 to-[#ff1111]/10 -translate-y-1/2" />
+              
+              {/* Animated progress fill */}
               <div 
-                className="rounded-full bg-[#050507] border-2 border-[#ff1111] flex items-center justify-center relative z-10 overflow-hidden"
-                style={{ width: `${config.hubSize * 0.7}px`, height: `${config.hubSize * 0.7}px` }}
-              >
-                <div className="text-center">
-                  <span className="text-[9px] xs:text-xs font-bold text-[#ff1111] block">
-                    {agilePhases[activePhase].name.substring(0, 3)}
-                  </span>
-                  <span className="text-[7px] xs:text-[8px] text-zinc-500">
-                    {activePhase + 1}/6
-                  </span>
-                </div>
-              </div>
+                className="absolute left-0 top-1/2 h-px bg-gradient-to-r from-[#ff1111] to-[#ff4444] -translate-y-1/2 transition-all duration-1000 ease-out"
+                style={{ width: `${((activePhase + animationProgress) / agilePhases.length) * 100}%` }}
+              />
 
-              {/* Center label */}
-              <div className="absolute -bottom-6 sm:-bottom-8 left-1/2 -translate-x-1/2 text-[9px] xs:text-xs font-bold uppercase tracking-widest text-[#ff1111] whitespace-nowrap">
-                {isPlaying ? 'In Progress' : 'Paused'}
-              </div>
-            </div>
-          </div>
-
-          {/* Orbit Path with Flowing Animation */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-            <div 
-              className="rounded-full border border-white/5 relative"
-              style={{ 
-                width: `${config.orbitRadius * 2}px`, 
-                height: `${config.orbitRadius * 2}px` 
-              }}
-            >
-              {/* Flowing dots animation on orbit path */}
-              {isPlaying && Array.from({ length: FLOW_DOT_COUNT }).map((_, i) => {
-                const dotAngle = ((i / FLOW_DOT_COUNT) * 360 + (animationProgress * 360)) % 360;
-                const dotRad = (dotAngle * Math.PI) / 180;
-                const dotX = Math.cos(dotRad) * config.orbitRadius + config.orbitRadius;
-                const dotY = Math.sin(dotRad) * config.orbitRadius + config.orbitRadius;
-                const opacity = 1 - (i / FLOW_DOT_COUNT) * 0.7;
-                const size = i === 0 ? 5 : i < 3 ? 4 : 3;
+              {/* Flow dots moving along the line */}
+              {isPlaying && Array.from({ length: 8 }).map((_, i) => {
+                const progress = ((i / 8) + animationProgress) % 1;
                 return (
                   <div
-                    key={`flow-dot-${i}`}
-                    className="absolute rounded-full bg-[#ff1111]"
+                    key={`flow-${i}`}
+                    className="absolute top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#ff1111]"
                     style={{
-                      left: `${dotX}px`,
-                      top: `${dotY}px`,
-                      width: `${size}px`,
-                      height: `${size}px`,
-                      opacity: opacity,
+                      left: `${progress * 100}%`,
+                      opacity: 1 - (i / 8) * 0.8,
                       transform: 'translate(-50%, -50%)',
-                      boxShadow: i === 0 ? '0 0 6px #ff1111' : 'none',
+                      boxShadow: i === 0 ? '0 0 8px #ff1111' : 'none',
                     }}
                   />
                 );
               })}
 
-              {/* Directional arrows on the orbit path */}
-              {[0, 90, 180, 270].map((arrowAngle, i) => {
-                const arrowRad = ((arrowAngle + 45) * Math.PI) / 180;
-                const arrowX = Math.cos(arrowRad) * config.orbitRadius + config.orbitRadius;
-                const arrowY = Math.sin(arrowRad) * config.orbitRadius + config.orbitRadius;
+              {/* Phase indicators on the line */}
+              {agilePhases.map((phase, index) => {
+                const isActive = activePhase === index;
+                const isCompleted = activePhase > index;
+                const isNext = (activePhase + 1) % agilePhases.length === index;
+
                 return (
-                  <div
-                    key={`arrow-${i}`}
-                    className="absolute text-[#ff1111]/30"
-                    style={{
-                      left: `${arrowX}px`,
-                      top: `${arrowY}px`,
-                      transform: `translate(-50%, -50%) rotate(${arrowAngle + 135}deg)`,
-                    }}
-                  >
-                    <FaChevronRight className="text-[8px] xs:text-xs" />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Phase Nodes positioned in a circle */}
-          <div 
-            className="absolute inset-0"
-            style={{ height: `${config.containerHeight}px` }}
-          >
-            {/* SVG for animated path trail */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" style={{ overflow: 'visible' }}>
-              <defs>
-                <linearGradient id="trailGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#ff1111" stopOpacity="0" />
-                  <stop offset="100%" stopColor="#ff1111" stopOpacity="0.6" />
-                </linearGradient>
-              </defs>
-              {isPlaying && (() => {
-                const currentAngle = (activePhase * 60 - 90) * (Math.PI / 180);
-                const nextAngle = (((activePhase + 1) % 6) * 60 - 90) * (Math.PI / 180);
-                const trailR = config.orbitRadius;
-                const cx = config.centerX;
-                const cy = config.centerY;
-                const x1 = cx + Math.cos(currentAngle) * trailR;
-                const y1 = cy + Math.sin(currentAngle) * trailR;
-                const x2 = cx + Math.cos(nextAngle) * trailR;
-                const y2 = cy + Math.sin(nextAngle) * trailR;
-                return (
-                  <line
-                    x1={x1}
-                    y1={y1}
-                    x2={x2}
-                    y2={y2}
-                    stroke="url(#trailGradient)"
-                    strokeWidth="1.5"
-                    strokeDasharray="6 4"
-                    className="animate-pulse"
-                    style={{ opacity: animationProgress * 0.6 }}
-                  />
-                );
-              })()}
-            </svg>
-
-            {agilePhases.map((phase, index) => {
-              const angle = (index * 60 - 90) * (Math.PI / 180);
-              const x = Math.cos(angle) * config.orbitRadius;
-              const y = Math.sin(angle) * config.orbitRadius;
-              const isActive = activePhase === index;
-              const isNext = (activePhase + 1) % agilePhases.length === index;
-              const IconComponent = phase.icon;
-
-              // Calculate card position - center the card on the orbit point
-              const cardOffsetX = x;
-              const cardOffsetY = y;
-
-              return (
-                <div
-                  key={phase.id}
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out"
-                  style={{
-                    transform: `translate(calc(-50% + ${cardOffsetX}px), calc(-50% + ${cardOffsetY}px))`,
-                  }}
-                >
-                  {/* Connection line to center */}
-                  <div
-                    className={`absolute transition-all duration-500 ${
-                      isActive ? 'opacity-80' : 'opacity-10'
-                    }`}
-                    style={{
-                      width: `${config.orbitRadius - config.hubSize / 2 - 20}px`,
-                      height: '1px',
-                      background: isActive
-                        ? `linear-gradient(90deg, ${phase.color}, transparent)`
-                        : phase.color,
-                      left: x >= 0 ? '100%' : 'auto',
-                      right: x < 0 ? '100%' : 'auto',
-                      top: '50%',
-                      transform: `rotate(${Math.atan2(y, x) * (180 / Math.PI)}deg)`,
-                      transformOrigin: x >= 0 ? '0 50%' : '100% 50%',
-                    }}
-                  />
-
-                  {/* Phase Card */}
-                  <div
-                    className={`relative group cursor-pointer transition-all duration-500 ${
-                      isActive
-                        ? 'scale-110 z-30'
-                        : isNext
-                        ? 'scale-105 z-20'
-                        : 'scale-100 z-10 hover:scale-105'
-                    }`}
+                  <button
+                    key={phase.id}
                     onClick={() => {
                       setActivePhase(index);
                       setIsPlaying(false);
                     }}
+                    className="relative z-10 flex flex-col items-center group"
                   >
-                    {/* Glow effect when active */}
-                    {isActive && isPlaying && (
-                      <div
-                        className="absolute inset-0 rounded-lg blur-lg opacity-40 animate-pulse"
-                        style={{ backgroundColor: phase.color }}
-                      />
-                    )}
-
-                    {/* Next phase indicator */}
-                    {isNext && !isActive && isPlaying && (
-                      <div className="absolute -inset-0.5 rounded-lg border-2 border-dashed border-[#ff1111]/40 animate-pulse" />
-                    )}
-
-                    {/* Card */}
+                    {/* Indicator dot */}
                     <div
-                      className={`relative p-2 xs:p-3 rounded-lg border transition-all duration-500 ${
-                        isActive
-                          ? `border-[${phase.color}] bg-[${phase.bgColor}]`
-                          : isNext
-                          ? 'border-[#ff1111]/50 bg-[#090b0f]/90'
-                          : 'border-white/10 bg-[#090b0f]/80 hover:border-white/20'
+                      className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-500 ${
+                        isActive 
+                          ? 'bg-[#ff1111] scale-150 shadow-[0_0_12px_#ff1111]' 
+                          : isCompleted 
+                          ? 'bg-[#ff1111]/60 scale-100' 
+                          : isNext 
+                          ? 'bg-[#ff1111]/40 scale-125 animate-pulse' 
+                          : 'bg-zinc-700 scale-100'
                       }`}
-                      style={{
-                        borderColor: isActive ? phase.color : isNext ? '#ff111180' : undefined,
-                        backgroundColor: isActive ? phase.bgColor : undefined,
-                      }}
-                    >
-                      {/* Icon */}
+                    />
+                    
+                    {/* Phase number below */}
+                    <span className={`mt-2 text-[8px] xs:text-[9px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-500 ${
+                      isActive ? 'text-[#ff1111]' : isCompleted ? 'text-zinc-500' : 'text-zinc-600'
+                    }`}>
+                      {String(phase.id).padStart(2, '0')}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Central Status Hub */}
+          <div className="flex justify-center mb-6 sm:mb-8">
+            <div className="relative">
+              {/* Outer pulsing ring */}
+              {isPlaying && (
+                <div className="absolute inset-0 -m-4">
+                  <div 
+                    className="w-full h-full rounded-full border border-[#ff1111]/30 animate-ping"
+                    style={{ animationDuration: '2s' }}
+                  />
+                </div>
+              )}
+
+              {/* Main hub */}
+              <div 
+                className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#0a0a0f] border-2 border-[#ff1111]/50 flex items-center justify-center overflow-hidden"
+              >
+                {/* Progress arc */}
+                <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100">
+                  <circle
+                    cx="50" cy="50" r="42"
+                    fill="none"
+                    stroke="#ffffff08"
+                    strokeWidth="3"
+                  />
+                  <circle
+                    cx="50" cy="50" r="42"
+                    fill="none"
+                    stroke="#ff1111"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeDasharray={`${animationProgress * 264} 264`}
+                    style={{ filter: 'drop-shadow(0 0 4px #ff1111)' }}
+                  />
+                </svg>
+
+                {/* Hub content */}
+                <div className="text-center relative z-10">
+                  <div className={`text-xs sm:text-sm font-black text-[#ff1111] transition-all duration-300 ${isPlaying ? 'animate-pulse' : ''}`}>
+                    {activePhase + 1}
+                  </div>
+                  <div className="text-[7px] sm:text-[8px] text-zinc-500 uppercase">
+                    of {agilePhases.length}
+                  </div>
+                </div>
+              </div>
+
+              {/* Status label */}
+              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] font-semibold uppercase tracking-widest text-[#ff1111] whitespace-nowrap">
+                {isPlaying ? (
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1 h-1 rounded-full bg-[#ff1111] animate-pulse" />
+                    Active
+                  </span>
+                ) : (
+                  <span className="text-zinc-500">Paused</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Phase Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            {agilePhases.map((phase, index) => {
+              const isActive = activePhase === index;
+              const isNext = (activePhase + 1) % agilePhases.length === index;
+              const IconComponent = phase.icon;
+
+              return (
+                <div
+                  key={phase.id}
+                  className={`relative group cursor-pointer transition-all duration-500 ${
+                    isActive ? 'scale-[1.02] z-20' : 'hover:scale-[1.01]'
+                  }`}
+                  onClick={() => {
+                    setActivePhase(index);
+                    setIsPlaying(false);
+                  }}
+                >
+                  {/* Active glow effect */}
+                  {isActive && isPlaying && (
+                    <div 
+                      className="absolute -inset-1 rounded-xl blur-xl opacity-30 animate-pulse"
+                      style={{ backgroundColor: phase.color }}
+                    />
+                  )}
+
+                  {/* Connection line between cards (desktop only) */}
+                  {index < agilePhases.length - 1 && (
+                    <div className="hidden lg:block absolute top-8 -right-2 w-4 h-px">
+                      <div 
+                        className={`w-full h-full transition-all duration-500 ${
+                          isActive || activePhase > index ? 'bg-[#ff1111]/60' : 'bg-zinc-700/50'
+                        }`}
+                      />
+                    </div>
+                  )}
+
+                  {/* Card */}
+                  <div
+                    className={`relative p-4 rounded-xl border transition-all duration-500 ${
+                      isActive
+                        ? 'border-[#ff1111]/60 bg-[#1a0a0a]'
+                        : isNext
+                        ? 'border-[#ff1111]/30 bg-[#0d0d12] border-dashed'
+                        : 'border-white/5 bg-[#0a0a0f] hover:border-white/10'
+                    }`}
+                  >
+                    {/* Next badge */}
+                    {isNext && !isActive && (
+                      <div className="absolute -top-2 -right-2 px-2 py-0.5 bg-[#ff1111] text-[#050507] text-[8px] font-bold uppercase tracking-wider rounded-full">
+                        Next
+                      </div>
+                    )}
+
+                    {/* Header row */}
+                    <div className="flex items-start justify-between mb-3">
+                      {/* Icon container */}
                       <div
-                        className={`flex items-center justify-center h-8 w-8 xs:h-9 xs:w-9 sm:h-10 sm:w-10 rounded-md mb-1.5 transition-all duration-500 ${
+                        className={`flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-lg transition-all duration-500 ${
                           isActive ? 'scale-110' : ''
                         }`}
                         style={{
-                          backgroundColor: isActive
-                            ? `${phase.color}20`
-                            : isNext
-                            ? '#ff111115'
-                            : 'rgba(255,255,255,0.05)',
+                          backgroundColor: isActive ? `${phase.color}25` : isNext ? '#ff111115' : 'rgba(255,255,255,0.03)',
                         }}
                       >
                         <IconComponent
-                          className={`text-base xs:text-lg transition-all duration-500 ${
-                            isActive ? 'text-white' : isNext ? 'text-[#ff1111]' : 'text-zinc-400'
+                          className={`text-lg sm:text-xl transition-all duration-500 ${
+                            isActive ? 'scale-110' : ''
                           }`}
-                          style={{ color: isActive ? phase.color : isNext ? '#ff1111' : undefined }}
+                          style={{ color: isActive ? phase.color : isNext ? '#ff1111' : '#71717a' }}
                         />
                       </div>
 
-                      {/* Phase number */}
-                      <div className={`absolute -top-1.5 -right-1.5 h-4 w-4 xs:h-5 xs:w-5 rounded-full bg-[#050507] border flex items-center justify-center ${
-                        isNext ? 'border-[#ff1111]' : 'border-white/20'
+                      {/* Phase number badge */}
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center border ${
+                        isActive ? 'border-[#ff1111] bg-[#ff1111]/20' : isNext ? 'border-[#ff1111]/50' : 'border-zinc-700'
                       }`}>
-                        <span className={`text-[6px] xs:text-[8px] font-bold ${isNext ? 'text-[#ff1111]' : 'text-zinc-500'}`}>
+                        <span className={`text-[9px] font-bold ${isActive ? 'text-[#ff1111]' : 'text-zinc-500'}`}>
                           {phase.id}
                         </span>
                       </div>
-
-                      {/* Phase name */}
-                      <h3
-                        className={`text-[10px] xs:text-xs font-bold uppercase tracking-wide transition-all duration-500 ${
-                          isActive ? 'text-white' : isNext ? 'text-[#ff1111]' : 'text-zinc-400'
-                        }`}
-                      >
-                        {phase.name}
-                      </h3>
-
-                      {/* Next label for upcoming phase */}
-                      {isNext && !isActive && (
-                        <div className="absolute -top-5 left-1/2 -translate-x-1/2 px-1.5 py-0.5 bg-[#ff1111] text-[#050507] text-[6px] xs:text-[8px] font-bold uppercase tracking-wider rounded-full whitespace-nowrap">
-                          Next
-                        </div>
-                      )}
-
-                      {/* Description - only show when active */}
-                      <div
-                        className={`overflow-hidden transition-all duration-500 ${
-                          isActive
-                            ? 'max-h-16 opacity-100 mt-1'
-                            : 'max-h-0 opacity-0'
-                        }`}
-                      >
-                        <p className="text-[8px] xs:text-[10px] text-zinc-400 leading-relaxed line-clamp-2">
-                          {phase.description}
-                        </p>
-                      </div>
                     </div>
+
+                    {/* Phase name */}
+                    <h3 className={`text-sm sm:text-base font-bold uppercase tracking-wide mb-2 transition-all duration-500 ${
+                      isActive ? 'text-white' : isNext ? 'text-[#ff1111]' : 'text-zinc-400'
+                    }`}>
+                      {phase.name}
+                    </h3>
+
+                    {/* Description */}
+                    <p className={`text-xs text-zinc-400 leading-relaxed transition-all duration-500 ${
+                      isActive ? 'opacity-100' : 'opacity-60'
+                    }`}>
+                      {phase.description}
+                    </p>
+
+                    {/* Active indicator bar at bottom */}
+                    <div 
+                      className={`absolute bottom-0 left-0 right-0 h-px transition-all duration-500 ${
+                        isActive ? 'opacity-100' : 'opacity-0'
+                      }`}
+                      style={{ 
+                        background: `linear-gradient(90deg, transparent, ${phase.color}, transparent)` 
+                      }}
+                    />
                   </div>
                 </div>
               );
