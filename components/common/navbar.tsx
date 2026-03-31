@@ -61,17 +61,17 @@ export default function Home() {
 
       {/* Mobile Menu Overlay */}
       <div 
-        className={`fixed inset-0 top-16 md:top-20 bg-[#080808]/[0.98] backdrop-blur-2xl transition-all duration-300 md:hidden ${
+        className={`fixed inset-0 top-16 md:top-20 bg-black/70 backdrop-blur-xl transition-all duration-300 md:hidden ${
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
-        <div className="flex flex-col items-center justify-center h-full space-y-6 sm:space-y-8 pb-32">
+        <div className="flex flex-col items-center justify-start pt-12 xs:pt-16 sm:pt-20 space-y-4 xs:space-y-5 sm:space-y-6 px-6 overflow-y-auto">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={getNavHref(link.href)}
               onClick={() => setIsOpen(false)}
-              className="text-lg sm:text-xl font-black uppercase tracking-[0.25em] sm:tracking-[0.3em] text-white hover:text-[#ff1010] transition-colors"
+              className="w-full max-w-sm text-center py-4 px-6 rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-md text-base xs:text-lg sm:text-xl font-black uppercase tracking-[0.2em] xs:tracking-[0.25em] sm:tracking-[0.3em] text-white hover:border-red-500/40 hover:bg-red-500/10 hover:text-[#ff1010] active:bg-red-500/15 transition-all duration-200"
             >
               {link.label}
             </Link>

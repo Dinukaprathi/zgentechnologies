@@ -1,17 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FaGithub, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
+import { FaGithub, FaLinkedinIn, FaTiktok } from "react-icons/fa6";
 
 const resourceLinks = [
-  { label: "Documentation", href: "#" },
-  { label: "Latest Blog", href: "#" },
-  { label: "Open Source", href: "#" },
-  { label: "Privacy Protocol", href: "#" },
+  { label: "Services", href: "#services" },
+  { label: "Latest Blog", href: "/blog" },
 ];
 
 const socialLinks = [
-  { label: "Twitter", href: "#", icon: FaXTwitter },
-  { label: "LinkedIn", href: "#", icon: FaLinkedinIn },
+  { label: "TikTok", href: "https://www.tiktok.com/@zgenlab", icon: FaTiktok },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/zgenlabs", icon: FaLinkedinIn },
   { label: "GitHub", href: "#", icon: FaGithub },
 ];
 
@@ -72,12 +70,17 @@ export default function Footer() {
 
           <div className="md:pl-8">
             <p className="text-[9px] xs:text-[10px] font-bold uppercase tracking-[0.28em] text-[#c0c5d1]">
-              HQ Connections
+              Contact Us
             </p>
             <div className="mt-3 xs:mt-5 space-y-2 xs:space-y-3 text-sm text-[#7d8597]">
-              <p>hello@zgenlabs.tech</p>
-              <p>+1 (888) 200-0181</p>
-              <p>58/1/C Wikramaarachchi road, Yakkala, Sri Lanka</p>
+              <p>info@zgenlabs.com</p>
+              <p>+94 77 247 1142</p>
+              <Link
+                href="/contact"
+                className="inline-block mt-3 px-4 py-2 bg-[#ff1010] text-white text-xs font-semibold uppercase tracking-wider hover:bg-red-500 transition-colors"
+              >
+                Contact Us
+              </Link>
             </div>
           </div>
         </div>

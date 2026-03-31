@@ -5,7 +5,7 @@ export const contactCards = [
 	},
 	{
 		title: 'Email Channel',
-		value: 'zgenlabs20@gmail.com',
+		value: 'info@zgenlabs.com',
 	},
 	{
 		title: 'Phone Line',
