@@ -3,11 +3,19 @@
 import { flagLabels } from "@/data/labelsUtil";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
+import Loader from "@/components/ui/Loader";
+
+const NAVIGATION_LOADER_MS = 3000;
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const navigationTimerRef = useRef<number | null>(null);
+  const pathname = usePathname();
+  const router = useRouter();
 
   const navLinks = flagLabels.map((item) => ({
     href: item.href ?? `#${item.key}`,
@@ -17,12 +25,53 @@ export default function Home() {
   const getNavHref = (href: string) =>
     href.startsWith("#") ? `/${href}` : href;
 
+  useEffect(() => {
+    return () => {
+      if (navigationTimerRef.current !== null) {
+        window.clearTimeout(navigationTimerRef.current);
+      }
+    };
+  }, []);
+
+  const startNavLoading = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    if (
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0
+    ) {
+      return;
+    }
+
+    const isSamePageHashJump = href.startsWith("/#") && pathname === "/";
+    const isSameRoute = href === pathname;
+
+    if (isSamePageHashJump || isSameRoute || isNavigating) {
+      setIsOpen(false);
+      return;
+    }
+
+    event.preventDefault();
+    setIsOpen(false);
+    setIsNavigating(true);
+
+    navigationTimerRef.current = window.setTimeout(() => {
+      router.push(href);
+    }, NAVIGATION_LOADER_MS);
+  };
+
   return (
-    <nav className="fixed top-0 w-full z-[100] bg-[#080808]/90 backdrop-blur-xl border-b border-white/5">
+    <>
+      {isNavigating && <Loader />}
+      <nav className="fixed top-0 w-full z-[100] bg-[#080808]/90 backdrop-blur-xl border-b border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="flex justify-between items-center h-16 sm:h-18 md:h-20">
+        <div className="flex h-16 items-center justify-between md:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-0 group">
+          <Link href="/" onClick={(event) => startNavLoading(event, "/")} className="flex items-center gap-0 group">
             <Image
               src="/logo/logo-without-bg.png"
               alt="ZGenLabs Logo"
@@ -41,6 +90,7 @@ export default function Home() {
               <Link
                 key={link.href}
                 href={getNavHref(link.href)}
+                onClick={(event) => startNavLoading(event, getNavHref(link.href))}
                 className="rounded-md px-2.5 lg:px-3 py-1.5 text-zinc-400 transition hover:text-white"
               >
                 {link.label}
@@ -70,7 +120,7 @@ export default function Home() {
             <Link
               key={link.href}
               href={getNavHref(link.href)}
-              onClick={() => setIsOpen(false)}
+              onClick={(event) => startNavLoading(event, getNavHref(link.href))}
               className="w-full max-w-sm text-center py-4 px-6 rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-md text-base xs:text-lg sm:text-xl font-black uppercase tracking-[0.2em] xs:tracking-[0.25em] sm:tracking-[0.3em] text-white hover:border-red-500/40 hover:bg-red-500/10 hover:text-[#ff1010] active:bg-red-500/15 transition-all duration-200"
             >
               {link.label}
@@ -78,6 +128,7 @@ export default function Home() {
           ))}
         </div>
       </div>
-    </nav>
+      </nav>
+    </>
   );
 }

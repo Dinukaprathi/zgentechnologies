@@ -24,7 +24,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#080808] text-gray-200 font-sans antialiased overflow-x-hidden max-w-[100vw]">
+      <body className="w-full bg-[#080808] text-gray-200 font-sans antialiased overflow-x-hidden">
         {children}
       </body>
     </html>

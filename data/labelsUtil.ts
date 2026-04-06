@@ -6,7 +6,7 @@ export interface FlagLabel {
 
 export const flagLabels: FlagLabel[] = [
   { key: 'services', text: 'Our Services', href: '#services' },
-  { key: 'blog', text: 'Blog', href: '/blog' },
+  { key: 'blog', text: 'Blogs', href: '/blog' },
   { key: 'faq', text: 'FAQ', href: '/faq' },
   { key: 'work', text: 'Our Work', href: '#work' },
   { key: 'contact', text: 'Contact Us', href: '/contact' },

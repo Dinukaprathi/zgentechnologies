@@ -119,7 +119,7 @@ export default function Testimonials({ testimonials }: Readonly<TestimonialsProp
           >
             <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-red-700 via-red-500 to-red-800" />
             <p className="mb-5 xs:mb-6 sm:mb-8 text-base xs:text-lg italic leading-relaxed text-zinc-100 sm:text-xl sm:leading-relaxed md:text-2xl md:leading-relaxed">
-              "{current.quote}"
+              &quot;{current.quote}&quot;
             </p>
 
             <div className="flex items-center gap-3 xs:gap-4">

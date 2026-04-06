@@ -20,10 +20,10 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Ensuring the loader stays for a minimum of 2 seconds for visibility
+    // Ensuring the loader stays for a minimum of 3 seconds for visibility
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
