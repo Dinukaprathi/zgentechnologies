@@ -64,19 +64,8 @@ DevOps
 
 Docker
 GitHub Actions
-AWS / Vercel / Azure
+ Vercel 
 📦 Development Workflow
 Research → Design → Development → Testing → Deployment → Maintenance
 
 We follow Agile development practices ensuring fast delivery and continuous improvement.
-
-🚀 Getting Started
-Clone Repository
-git clone https://github.com/ZGenLabs-Technologies/project-name.git
-Install Dependencies
-pnpm install
-Start Development Server
-pnpm run dev
-🎯 Our Vision
-
-To empower businesses through technology by creating scalable, intelligent, and user-focused digital solutions.
